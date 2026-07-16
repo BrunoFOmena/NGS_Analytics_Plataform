@@ -1,0 +1,23 @@
+# Run without Docker/Postgres:
+#   mvn spring-boot:run -Dspring-boot.run.profiles=dev-h2
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+  datasource:
+    url: jdbc:h2:file:../data/ngs-h2;MODE=PostgreSQL;AUTO_SERVER=TRUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+
+ngs:
+  queue:
+    enabled: false
+  storage:
+    local-dir: ../data/uploads

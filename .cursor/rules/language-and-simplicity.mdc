@@ -1,0 +1,24 @@
+---
+description: English-only project with a strong bias toward simplicity
+alwaysApply: true
+---
+
+# Language and simplicity
+
+- Write everything in **English**: code, identifiers, comments, log messages,
+  commit messages, and docs. No Portuguese in the codebase.
+- Prefer the **smallest change** that solves the problem and preserves functionality.
+- Avoid overengineering and over-coding:
+  - No new abstraction, interface, or design pattern unless it is needed right now.
+  - No new dependency, framework, or config option when the current stack already works.
+  - Do not add speculative "future-proof" code.
+- Only comment non-obvious intent, trade-offs, or constraints. Do not narrate the code.
+
+```java
+// BAD: needless indirection for a single caller
+interface Greeter { String greet(String n); }
+class DefaultGreeter implements Greeter { public String greet(String n){ return "hi "+n; } }
+
+// GOOD
+String greet(String name) { return "hi " + name; }
+```

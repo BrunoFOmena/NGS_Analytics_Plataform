@@ -1,0 +1,18 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##FILTER=<ID=LowQual,Description="Low quality">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
+##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
+##INFO=<ID=GENE,Number=1,Type=String,Description="Gene symbol">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SAMPLE
+chr1	100	.	A	G	99.5	PASS	DP=30;AF=0.5;GENE=BRCA1	GT	0/1
+chr1	200	.	C	T	80.0	PASS	DP=25;AF=0.25;GENE=BRCA1	GT	0/1
+chr1	300	.	G	A	45.0	LowQual	DP=10;AF=0.1;GENE=TP53	GT	0/1
+chr2	150	.	AT	A	70.0	PASS	DP=40;AF=0.4;GENE=EGFR	GT	0/1
+chr2	250	.	A	AT	65.0	PASS	DP=35;AF=0.35;GENE=EGFR	GT	1/1
+chr2	350	.	G	C	90.0	PASS	DP=50;AF=0.5;GENE=KRAS	GT	0/1
+chr3	100	.	T	A	55.0	PASS	DP=20;AF=0.2;GENE=PTEN	GT	0/1
+chr3	200	.	ACGT	A	40.0	LowQual	DP=8;AF=0.05;GENE=PTEN	GT	0/1
+chrX	500	.	C	G	88.0	PASS	DP=28;AF=0.45;GENE=DMD	GT	0/1
+chrX	600	.	A	C	92.0	PASS	DP=32;AF=0.5;GENE=DMD	GT	0/1

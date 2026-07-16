@@ -1,0 +1,136 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ngs-analytics-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ngs
+    username: ngs
+    password: ngs
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ngs
+    password: ngs
+  profiles:
+    default: local
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+ngs:
+  jwt:
+    secret: "change-me-ngs-analytics-platform-jwt-secret-key-32bytes-min"
+    expiration-ms: 86400000
+  storage:
+    type: local
+    local-dir: ../data/uploads
+    max-upload-bytes: 209715200
+  queue:
+    enabled: false
+    exchange: ngs.analysis
+    routing-key: analysis.jobs
+    queue: ngs.analysis.jobs
+  spark:
+    enabled: false
+    master: local[2]
+    driver-memory: 1g
+    jar-path: ../spark-jobs/target/ngs-spark-jobs-0.1.0-SNAPSHOT.jar
+  minio:
+    enabled: false
+    endpoint: http://localhost:9000
+    access-key: ngsminio
+    secret-key: ngsminio123
+    bucket: ngs-uploads
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    com.ngs: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
+ngs:
+  queue:
+    enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: async
+  rabbitmq:
+    listener:
+      simple:
+        auto-startup: true
+
+ngs:
+  queue:
+    enabled: true
+  spark:
+    enabled: true
+  storage:
+    type: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:ngs;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  rabbitmq:
+    listener:
+      simple:
+        auto-startup: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
+
+ngs:
+  queue:
+    enabled: false
+  storage:
+    local-dir: ${java.io.tmpdir}/ngs-test-uploads

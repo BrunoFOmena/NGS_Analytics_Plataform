@@ -1,0 +1,215 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@600&display=swap');
+
+:root {
+  --bg: #eef3f0;
+  --bg-accent: #d9e7df;
+  --ink: #13251c;
+  --muted: #4d6358;
+  --line: #b7c9be;
+  --accent: #0f6a4d;
+  --accent-2: #c45c26;
+  --panel: rgba(255, 255, 255, 0.72);
+  --danger: #9b2c2c;
+  --shadow: 0 18px 40px rgba(19, 37, 28, 0.08);
+  --radius: 18px;
+  --font: 'IBM Plex Sans', sans-serif;
+  --display: 'IBM Plex Serif', serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 10%, #f7fff9 0%, transparent 40%),
+    radial-gradient(circle at 90% 0%, #f3ebe2 0%, transparent 35%),
+    linear-gradient(160deg, var(--bg), var(--bg-accent));
+}
+
+h1, h2 {
+  font-family: var(--display);
+  margin: 0 0 0.35rem;
+}
+
+p { color: var(--muted); margin-top: 0; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.shell:has(> main:only-child),
+.shell:not(:has(.nav)) {
+  grid-template-columns: 1fr;
+}
+
+.nav {
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--line);
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.brand {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.nav a {
+  display: block;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+
+.nav a.active,
+.nav a:hover {
+  background: rgba(15, 106, 77, 0.1);
+  text-decoration: none;
+}
+
+.user {
+  margin-top: auto;
+  display: grid;
+  gap: 0.5rem;
+}
+
+main {
+  padding: 2rem clamp(1rem, 3vw, 2.5rem);
+}
+
+.auth {
+  max-width: 420px;
+  margin: 8vh auto;
+  padding: 2rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.auth form, .inline-form {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+}
+
+input, select, button {
+  font: inherit;
+  padding: 0.7rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+}
+
+button {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.inline-form {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  align-items: center;
+}
+
+.page-head {
+  margin-bottom: 1.25rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.list li a, .list.compact li {
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  color: inherit;
+}
+
+.list li a:hover { border-color: var(--accent); text-decoration: none; }
+
+.list.compact li { padding: 0.7rem 0.9rem; }
+
+.stat-row, .actions, .upload-row, .grid-2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.stat-row span {
+  padding: 0.65rem 0.9rem;
+  background: rgba(15, 106, 77, 0.08);
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.chart {
+  width: 100%;
+  height: 320px;
+  margin: 1rem 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.5rem;
+}
+
+.chart.tall { height: 420px; }
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+.error { color: var(--danger); }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .nav { border-right: 0; border-bottom: 1px solid var(--line); }
+}

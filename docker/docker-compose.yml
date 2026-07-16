@@ -1,0 +1,91 @@
+# Phase 1 default: postgres only (~512MB).
+# Phase 2: docker compose --profile async up -d
+# Phase 4 observability: docker compose --profile obs up -d
+#
+# Recommended Docker Desktop memory limit: 6 GB on 16 GB laptops.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ngs-postgres
+    environment:
+      POSTGRES_DB: ngs
+      POSTGRES_USER: ngs
+      POSTGRES_PASSWORD: ngs
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ngs -d ngs"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    profiles: ["async"]
+    image: rabbitmq:3.13-management-alpine
+    container_name: ngs-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ngs
+      RABBITMQ_DEFAULT_PASS: ngs
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  minio:
+    profiles: ["async"]
+    image: minio/minio:latest
+    container_name: ngs-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ngsminio
+      MINIO_ROOT_PASSWORD: ngsminio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  prometheus:
+    profiles: ["obs"]
+    image: prom/prometheus:v2.54.1
+    container_name: ngs-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  grafana:
+    profiles: ["obs"]
+    image: grafana/grafana:11.2.0
+    container_name: ngs-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+volumes:
+  postgres_data:
+  minio_data:
