@@ -36,7 +36,6 @@ public class AnalysisService {
     private final FileTypeDetector fileTypeDetector;
     private final NgsProperties properties;
     private final ObjectProvider<RabbitTemplate> rabbitTemplate;
-    private final SparkJobLauncher sparkJobLauncher;
     private final AnalysisRunner analysisRunner;
 
     public AnalysisService(
@@ -49,7 +48,6 @@ public class AnalysisService {
             FileTypeDetector fileTypeDetector,
             NgsProperties properties,
             ObjectProvider<RabbitTemplate> rabbitTemplate,
-            SparkJobLauncher sparkJobLauncher,
             @org.springframework.context.annotation.Lazy AnalysisRunner analysisRunner
     ) {
         this.analysisRepository = analysisRepository;
@@ -61,7 +59,6 @@ public class AnalysisService {
         this.fileTypeDetector = fileTypeDetector;
         this.properties = properties;
         this.rabbitTemplate = rabbitTemplate;
-        this.sparkJobLauncher = sparkJobLauncher;
         this.analysisRunner = analysisRunner;
     }
 
@@ -71,7 +68,7 @@ public class AnalysisService {
         analysis.setSample(sample);
         analysis.setFileAsset(fileAsset);
         analysis.setStatus(AnalysisStatus.QUEUED);
-        analysis.setEngine(properties.getSpark().isEnabled() ? "SPARK_OR_JAVA" : "JAVA");
+        analysis.setEngine("JAVA");
         analysisRepository.save(analysis);
 
         UUID analysisId = analysis.getId();
@@ -136,13 +133,6 @@ public class AnalysisService {
             } else {
                 throw new ApiException(HttpStatus.BAD_REQUEST, "Unsupported file type for analysis");
             }
-
-            // Optional Spark path (no-op unless jar + spark-submit available)
-            sparkJobLauncher.tryRun(
-                    fileTypeDetector.isFastq(type) ? "fastq" : "vcf",
-                    file.getStoragePath(),
-                    System.getProperty("java.io.tmpdir") + "/ngs-spark-" + analysisId + ".json"
-            );
 
             analysis.setStatus(AnalysisStatus.DONE);
             analysis.setFinishedAt(Instant.now());

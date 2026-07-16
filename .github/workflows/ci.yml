@@ -22,19 +22,6 @@ jobs:
         working-directory: backend
         run: mvn -B -DskipTests package
 
-  spark-jobs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-          cache: maven
-      - name: Package spark-jobs
-        working-directory: spark-jobs
-        run: mvn -B -DskipTests package
-
   frontend:
     runs-on: ubuntu-latest
     steps:

@@ -8,7 +8,6 @@ public class NgsProperties {
     private final Jwt jwt = new Jwt();
     private final Storage storage = new Storage();
     private final Queue queue = new Queue();
-    private final Spark spark = new Spark();
     private final Minio minio = new Minio();
 
     public Jwt getJwt() {
@@ -21,10 +20,6 @@ public class NgsProperties {
 
     public Queue getQueue() {
         return queue;
-    }
-
-    public Spark getSpark() {
-        return spark;
     }
 
     public Minio getMinio() {
@@ -118,45 +113,6 @@ public class NgsProperties {
 
         public void setQueue(String queue) {
             this.queue = queue;
-        }
-    }
-
-    public static class Spark {
-        private boolean enabled;
-        private String master = "local[2]";
-        private String driverMemory = "1g";
-        private String jarPath = "../spark-jobs/target/ngs-spark-jobs-0.1.0-SNAPSHOT.jar";
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public String getMaster() {
-            return master;
-        }
-
-        public void setMaster(String master) {
-            this.master = master;
-        }
-
-        public String getDriverMemory() {
-            return driverMemory;
-        }
-
-        public void setDriverMemory(String driverMemory) {
-            this.driverMemory = driverMemory;
-        }
-
-        public String getJarPath() {
-            return jarPath;
-        }
-
-        public void setJarPath(String jarPath) {
-            this.jarPath = jarPath;
         }
     }
 

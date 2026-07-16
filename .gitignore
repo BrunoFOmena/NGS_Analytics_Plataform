@@ -13,7 +13,6 @@ Desktop.ini
 
 # Java / Maven
 backend/target/
-spark-jobs/target/
 *.class
 *.jar
 *.war

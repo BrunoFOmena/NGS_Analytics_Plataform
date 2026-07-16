@@ -53,11 +53,6 @@ ngs:
     exchange: ngs.analysis
     routing-key: analysis.jobs
     queue: ngs.analysis.jobs
-  spark:
-    enabled: false
-    master: local[2]
-    driver-memory: 1g
-    jar-path: ../spark-jobs/target/ngs-spark-jobs-0.1.0-SNAPSHOT.jar
   minio:
     enabled: false
     endpoint: http://localhost:9000
@@ -102,8 +97,6 @@ spring:
 
 ngs:
   queue:
-    enabled: true
-  spark:
     enabled: true
   storage:
     type: local
