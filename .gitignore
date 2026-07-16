@@ -26,6 +26,11 @@ frontend/.angular/
 frontend/coverage/
 npm-debug.log*
 
+# Local-only markdown (all .md except README.md)
+AGENT.md
+plan.md
+docs/
+
 # Data & uploads
 data/
 *.log
