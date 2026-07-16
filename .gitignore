@@ -3,10 +3,11 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-# IDE
+# IDE / Cursor
 .idea/
 *.iml
 .vscode/
+.cursor/
 *.swp
 *.swo
 
