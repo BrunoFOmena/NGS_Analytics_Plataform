@@ -34,6 +34,10 @@ docs/
 data/
 *.log
 
+# Local dev launcher (personal automation, not shipped to GitHub)
+NGS_ANALYTICS.cmd
+scripts/NGS_ANALYTICS.ps1
+
 # Env / secrets
 .env
 .env.local
