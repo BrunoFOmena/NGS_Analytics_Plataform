@@ -41,14 +41,15 @@ NGS Analytics Platform = Spring Boot (Java 21) API in `backend/` + Angular 19 da
 
 | Service | Dir | Run (dev) | URL |
 |---------|-----|-----------|-----|
-| API | `backend/` | `mvn spring-boot:run "-Dspring-boot.run.profiles=dev-h2"` | http://localhost:8080 (Swagger: `/swagger-ui.html`) |
+| API | `backend/` | `mvn spring-boot:run` (profile `dev-h2`) | http://localhost:8080 (Swagger: `/swagger-ui.html`) |
 | Web UI | `frontend/` | `npm start` (`ng serve`) | http://localhost:4200 |
 
 ### Non-obvious notes
 
-- Docker is NOT available in this environment. Do NOT use the Postgres/RabbitMQ/MinIO Compose stack or the default `local` profile (which points at `jdbc:postgresql://localhost:5432`). Run the API with the `dev-h2` profile, which uses a file-backed H2 DB and needs no external services. The full pipeline (upload → analysis → metrics) works fully on H2.
+- **DB split:** H2 for tests and Cloud Agents (`dev-h2` is the default profile). PostgreSQL only when activating `prod` (Compose or cloud). Do not introduce other databases.
+- Docker is NOT available in this Cloud Agent environment. Do not start Compose or profile `prod` here — `mvn spring-boot:run` (H2) is enough; the full pipeline works on H2.
 - Maven is required but there is no `mvnw` wrapper; the `mvn` binary is provided by the environment.
-- `mvn test` passes without Docker: `PostgresContainerIT` is a Failsafe-style `*IT` and is skipped by Surefire's `test` phase, so Testcontainers/Docker is never invoked.
+- `mvn test` uses in-memory H2. `PostgresContainerIT` is opt-in (`RUN_TESTCONTAINERS=true`) and needs Docker.
 - `frontend` unit tests need a Chrome binary: run `CHROME_BIN=$(which google-chrome) npm test -- --watch=false --browsers=ChromeHeadless`.
 - Angular CLI analytics prompt: `ng serve`/`ng test` will block on an interactive analytics consent prompt on a fresh machine. It has been disabled globally (`ng analytics disable --global`, stored in `~/.config/angular/config.json`). If you hit the prompt again, answer `N` or re-run that command.
 - H2 data persists in `data/ngs-h2*` (gitignored) and uploads in `data/uploads/`; delete these to reset local state.
