@@ -1,5 +1,38 @@
 # AGENTS.md
 
+## Coding principles (priority order)
+
+1. **Simplicity first** — smallest change that solves the request. Prefer clear straight-line code over clever abstractions.
+2. **Token economy** — keep diffs, files, comments, and docs short. Less surface area = cheaper future agent turns.
+3. **No over-engineering** — no new layers, frameworks, patterns, or config unless the task needs them now.
+4. **No dual / duplicate code** — reuse existing services, DTOs, parsers, and UI helpers. Do not fork parallel paths for the same concern.
+
+### Do
+
+- Match existing package/layout style (`backend/...` modular packages; `frontend/src/app/{core,pages}`).
+- Extend the nearest existing class/component before adding a new file.
+- Prefer one obvious implementation path (e.g. one upload flow, one metrics API shape).
+- Delete dead code you replace; do not leave unused alternates.
+- Write only tests that cover the changed behavior.
+
+### Do not
+
+- Add wrappers, adapters, facades, or “future-proof” interfaces for a single caller.
+- Duplicate DTO/mapper/parser logic across packages or FE/BE copies of the same rules.
+- Introduce optional feature flags, strategy enums, or config toggles unless requested.
+- Add large comments, READMEs, or design docs unless asked.
+- Refactor unrelated code “while here.”
+
+### Token-saving engineering habits
+
+| Habit | Why |
+|-------|-----|
+| Touch few files | Smaller context for the next agent |
+| Short names already used in repo | Avoid new vocabulary agents must relearn |
+| Colocate related logic | Less jumping between files |
+| Keep public APIs stable | Avoid cascading FE/BE edits |
+| Prefer editing over generating scaffolding | Less boilerplate in the window |
+
 ## Cursor Cloud specific instructions
 
 NGS Analytics Platform = Spring Boot (Java 21) API in `backend/` + Angular 19 dashboard in `frontend/`. See `README.md` for the full stack and standard commands.
