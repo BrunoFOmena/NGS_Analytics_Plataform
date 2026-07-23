@@ -10,9 +10,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 /**
- * Optional integration test. Run with Docker available and:
- *   set RUN_TESTCONTAINERS=true
- *   mvn -Dtest=PostgresContainerIT test
+ * Optional Postgres smoke test (Docker required):
+ *   RUN_TESTCONTAINERS=true mvn -Dtest=PostgresContainerIT test
  */
 @SpringBootTest
 @Testcontainers
@@ -30,14 +29,11 @@ class PostgresContainerIT {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
-        registry.add("spring.autoconfigure.exclude",
-                () -> "org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration");
-        registry.add("ngs.queue.enabled", () -> "false");
+        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
         registry.add("ngs.storage.local-dir", () -> System.getProperty("java.io.tmpdir") + "/ngs-tc-uploads");
     }
 
     @Test
     void contextLoads() {
-        // Spring context + Postgres container wiring
     }
 }

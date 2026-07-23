@@ -7,8 +7,6 @@ public class NgsProperties {
 
     private final Jwt jwt = new Jwt();
     private final Storage storage = new Storage();
-    private final Queue queue = new Queue();
-    private final Minio minio = new Minio();
 
     public Jwt getJwt() {
         return jwt;
@@ -16,14 +14,6 @@ public class NgsProperties {
 
     public Storage getStorage() {
         return storage;
-    }
-
-    public Queue getQueue() {
-        return queue;
-    }
-
-    public Minio getMinio() {
-        return minio;
     }
 
     public static class Jwt {
@@ -48,17 +38,8 @@ public class NgsProperties {
     }
 
     public static class Storage {
-        private String type = "local";
         private String localDir = "../data/uploads";
         private long maxUploadBytes = 209715200L;
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
 
         public String getLocalDir() {
             return localDir;
@@ -74,93 +55,6 @@ public class NgsProperties {
 
         public void setMaxUploadBytes(long maxUploadBytes) {
             this.maxUploadBytes = maxUploadBytes;
-        }
-    }
-
-    public static class Queue {
-        private boolean enabled;
-        private String exchange = "ngs.analysis";
-        private String routingKey = "analysis.jobs";
-        private String queue = "ngs.analysis.jobs";
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public String getExchange() {
-            return exchange;
-        }
-
-        public void setExchange(String exchange) {
-            this.exchange = exchange;
-        }
-
-        public String getRoutingKey() {
-            return routingKey;
-        }
-
-        public void setRoutingKey(String routingKey) {
-            this.routingKey = routingKey;
-        }
-
-        public String getQueue() {
-            return queue;
-        }
-
-        public void setQueue(String queue) {
-            this.queue = queue;
-        }
-    }
-
-    public static class Minio {
-        private boolean enabled;
-        private String endpoint = "http://localhost:9000";
-        private String accessKey = "ngsminio";
-        private String secretKey = "ngsminio123";
-        private String bucket = "ngs-uploads";
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public String getEndpoint() {
-            return endpoint;
-        }
-
-        public void setEndpoint(String endpoint) {
-            this.endpoint = endpoint;
-        }
-
-        public String getAccessKey() {
-            return accessKey;
-        }
-
-        public void setAccessKey(String accessKey) {
-            this.accessKey = accessKey;
-        }
-
-        public String getSecretKey() {
-            return secretKey;
-        }
-
-        public void setSecretKey(String secretKey) {
-            this.secretKey = secretKey;
-        }
-
-        public String getBucket() {
-            return bucket;
-        }
-
-        public void setBucket(String bucket) {
-            this.bucket = bucket;
         }
     }
 }

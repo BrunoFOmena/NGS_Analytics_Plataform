@@ -1,9 +1,7 @@
-# Run without Docker/Postgres:
-#   mvn spring-boot:run -Dspring-boot.run.profiles=dev-h2
+# Default for local/Cloud Agents (no Postgres required).
+#   mvn spring-boot:run
+#   mvn spring-boot:run "-Dspring-boot.run.profiles=dev-h2"
 spring:
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration
   datasource:
     url: jdbc:h2:file:../data/ngs-h2;MODE=PostgreSQL;AUTO_SERVER=TRUE
     username: sa
@@ -17,7 +15,5 @@ spring:
       enabled: true
 
 ngs:
-  queue:
-    enabled: false
   storage:
     local-dir: ../data/uploads
